@@ -17,6 +17,7 @@
     initHomeFilterPills();
     initScrollReveal();
     initWaTooltip();
+    initWaPildora();
     initOpeningHours();
     initMobileCtaBar();
     initBackToTop();
@@ -378,6 +379,22 @@
   /* ========================================================================
      9. AVISO FLOTANTE DE WHATSAPP (una vez por sesión)
      ======================================================================== */
+  // La píldora de WhatsApp se asoma sola una vez por sesión
+  function initWaPildora() {
+    var fab = document.querySelector('.whatsapp-floating');
+    if (!fab || !fab.querySelector('.wa-pill')) return;
+    var KEY = 'mavie-wa-pill';
+    try { if (window.sessionStorage && sessionStorage.getItem(KEY)) return; } catch (err) { return; }
+
+    window.setTimeout(function () {
+      fab.classList.add('wa-mostrar');
+      window.setTimeout(function () {
+        fab.classList.remove('wa-mostrar');
+        try { sessionStorage.setItem(KEY, '1'); } catch (err) { /* ignorar */ }
+      }, 4200);
+    }, 2600);
+  }
+
   function initWaTooltip() {
     var tooltip = document.querySelector('.whatsapp-tooltip');
     var closeBtn = document.querySelector('.whatsapp-tooltip-close');
