@@ -1283,3 +1283,374 @@ img[src*="/plates/"] {
   font-weight: 500;
 }
 .treatment-hero .pending { color: rgba(255,255,255,0.85); }
+
+/* ==========================================================================
+   20. MEGA-MENÚ CON FOTOGRAFÍA
+   ========================================================================== */
+
+/* El panel ocupa todo el ancho: se posiciona contra la cabecera,
+   no contra el elemento de menú. */
+.nav-item.has-mega { position: static; }
+
+.nav-mega {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1200;
+  background-color: var(--ivory);
+  border-top: 1px solid var(--border-light);
+  box-shadow: 0 24px 60px rgba(60, 42, 40, 0.16);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.28s var(--ease-out-soft),
+              transform 0.28s var(--ease-out-soft);
+}
+/* Se usa el ocultado nativo con [hidden]: transicionar visibility dejaba el
+   panel sin poder recibir el foco del teclado. */
+.nav-mega[hidden] { display: none; }
+.nav-item.is-open .nav-mega {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nav-mega-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  grid-template-areas: "grid feature" "foot foot";
+  gap: 1.2rem 2.4rem;
+  padding: 1.5rem 0 1.2rem;
+}
+
+.mega-grid {
+  grid-area: grid;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem 1.6rem;
+}
+
+/* --- Tarjeta de categoría --- */
+.mega-cat { min-width: 0; }
+
+.mega-cat-head {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.35rem 0.4rem;
+  margin: -0.35rem -0.4rem 0.35rem;
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast);
+}
+.mega-cat-head:hover { background-color: var(--blush-soft); }
+
+.mega-thumb {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: var(--blush);
+  display: block;
+}
+.mega-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s var(--ease-out-soft);
+}
+.mega-cat-head:hover .mega-thumb img { transform: scale(1.08); }
+
+.mega-cat-text { display: flex; flex-direction: column; min-width: 0; }
+.mega-cat-name {
+  font-family: var(--font-serif);
+  font-size: 1.08rem;
+  line-height: 1.2;
+  color: var(--ink);
+  transition: color var(--transition-fast);
+}
+.mega-cat-head:hover .mega-cat-name { color: var(--rose-deep); }
+.mega-count {
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+  margin-top: 0.1rem;
+}
+
+.mega-cat.is-current .mega-cat-name { color: var(--rose-deep); }
+.mega-cat.is-current .mega-thumb { outline: 2px solid var(--rose); outline-offset: 1px; }
+
+/* --- Tratamientos estrella dentro de cada categoría --- */
+.mega-sub { list-style: none; margin: 0; padding: 0 0 0 3.9rem; }
+.mega-sub li { margin: 0; }
+.mega-sub a {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.24rem 0.4rem 0.24rem 0;
+  font-size: 0.83rem;
+  color: var(--muted-text);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), padding-left var(--transition-fast);
+}
+.mega-sub a:hover { color: var(--rose-deep); padding-left: 0.3rem; }
+.mega-price {
+  flex-shrink: 0;
+  font-family: var(--font-serif);
+  font-size: 0.92rem;
+  color: var(--rose-deep);
+  font-weight: 600;
+}
+
+/* --- Bloque destacado --- */
+.mega-feature {
+  grid-area: feature;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: 1rem;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(150deg, var(--blush-soft), var(--warm-white));
+  border: 1px solid var(--border-light);
+}
+.mega-feature-tag {
+  align-self: flex-start;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(100deg, var(--rose-deep), var(--rose));
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-full);
+}
+.mega-feature-card { display: flex; flex-direction: column; gap: 0.6rem; }
+.mega-feature-media {
+  display: block;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: var(--blush);
+}
+.mega-feature-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.7s var(--ease-out-soft);
+}
+.mega-feature-card:hover .mega-feature-media img { transform: scale(1.06); }
+.mega-feature-body { display: flex; flex-direction: column; gap: 0.25rem; }
+.mega-feature-name {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  line-height: 1.15;
+  color: var(--ink);
+}
+.mega-feature-card:hover .mega-feature-name { color: var(--rose-deep); }
+.mega-feature-desc { font-size: 0.78rem; line-height: 1.45; color: var(--muted-text); }
+.mega-feature-price {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  color: var(--rose-deep);
+  font-weight: 600;
+  margin-top: 0.15rem;
+}
+.mega-feature-price small {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+  font-weight: 600;
+}
+.mega-feature .btn { justify-content: center; }
+
+/* --- Pie del panel --- */
+.mega-foot {
+  grid-area: foot;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 1.2rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border-light);
+}
+.mega-foot-note { font-size: 0.78rem; color: var(--muted-text); }
+.mega-foot-note .stars { color: var(--star-gold); letter-spacing: 0.06em; }
+
+/* Pantallas medianas: el destacado pasa debajo */
+@media (max-width: 1100px) {
+  .nav-mega-inner {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "grid" "feature" "foot";
+  }
+  .mega-feature { flex-direction: row; align-items: center; gap: 1rem; }
+  .mega-feature-card { flex-direction: row; align-items: center; gap: 1rem; flex: 1; }
+  .mega-feature-media { width: 130px; flex-shrink: 0; aspect-ratio: 4 / 3; }
+  .mega-feature-tag { display: none; }
+}
+
+/* --------------------------------------------------------------------------
+   20.1 Desplegable enriquecido de «El Estudio»
+   -------------------------------------------------------------------------- */
+.nav-dropdown-rich {
+  min-width: 320px;
+  padding: 0.6rem;
+}
+.nav-dropdown-rich {
+  visibility: visible;
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateX(-50%) translateY(12px);
+}
+.nav-dropdown-rich[hidden] { display: none; }
+.nav-item.is-open .nav-dropdown-rich {
+  opacity: 1;
+  transform: translateX(-50%) translateY(2px);
+}
+
+.nav-dd-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem;
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast);
+}
+.nav-dd-item:hover { background-color: var(--blush-soft); }
+.nav-dd-item:hover .nav-dropdown-title { color: var(--rose-deep); }
+.nav-dd-item.is-current .nav-dropdown-title { color: var(--rose-deep); }
+.nav-dd-thumb {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background-color: var(--blush);
+}
+.nav-dd-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.nav-dd-item .nav-dropdown-title,
+.nav-dd-item .nav-dropdown-desc { display: block; }
+
+/* Flecha del disparador */
+.nav-item.is-open .dropdown-arrow { transform: rotate(180deg); color: var(--rose-deep); }
+
+/* --------------------------------------------------------------------------
+   20.2 CAJÓN MÓVIL EN ACORDEÓN
+   -------------------------------------------------------------------------- */
+.mobile-nav-drawer { display: flex; flex-direction: column; }
+.mobile-nav-links {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.mobile-nav-footer { flex-shrink: 0; }
+
+.m-link {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0.4rem 0.2rem;
+  font-family: var(--font-serif);
+  font-size: 1.22rem;
+  color: var(--ink);
+  border-bottom: 1px solid var(--border-light);
+}
+.m-link.active { color: var(--rose-deep); }
+
+.m-acc { border-bottom: 1px solid var(--border-light); }
+.m-acc-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  min-height: 48px;
+  padding: 0.4rem 0.2rem;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font-serif);
+  font-size: 1.22rem;
+  color: var(--ink);
+  text-align: left;
+}
+.m-acc-btn > span:first-child { flex: 1; }
+.m-acc-meta {
+  font-family: var(--font-sans);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--rose-deep);
+  background-color: var(--blush-soft);
+  padding: 0.18rem 0.5rem;
+  border-radius: var(--radius-full);
+}
+.m-acc-btn .dropdown-arrow {
+  width: 11px;
+  flex-shrink: 0;
+  color: var(--rose-deep);
+  transition: transform var(--transition-normal);
+}
+.m-acc-btn[aria-expanded="true"] { color: var(--rose-deep); }
+.m-acc-btn[aria-expanded="true"] .dropdown-arrow { transform: rotate(180deg); }
+
+.m-acc-panel { padding: 0.2rem 0 0.9rem; }
+.m-acc-panel[hidden] { display: none; }
+
+.m-cat {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.3rem;
+  border-radius: var(--radius-md);
+  min-height: 56px;
+}
+.m-cat:active { background-color: var(--blush-soft); }
+.m-cat.is-current { background-color: var(--blush-soft); }
+.m-cat-thumb {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: var(--blush);
+}
+.m-cat-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.m-cat-text { display: flex; flex-direction: column; min-width: 0; }
+.m-cat-name { font-size: 0.98rem; color: var(--ink); line-height: 1.2; }
+.m-cat.is-current .m-cat-name { color: var(--rose-deep); font-weight: 600; }
+.m-cat-count {
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+  margin-top: 0.1rem;
+}
+
+.m-all {
+  display: block;
+  margin-top: 0.4rem;
+  padding: 0.6rem 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--rose-deep);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-mega,
+  .mega-thumb img,
+  .mega-feature-media img,
+  .m-acc-btn .dropdown-arrow { transition: none !important; }
+}
+
+/* El pie del cajón no debe robar espacio a la lista de categorías */
+.mobile-nav-footer { padding-top: 1rem; }
+.mobile-nav-footer p { margin: 0.35rem 0 0; font-size: 0.78rem; line-height: 1.45; }
+.mobile-nav-footer .open-status { font-size: 0.74rem; }

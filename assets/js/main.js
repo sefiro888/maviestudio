@@ -23,6 +23,8 @@
     initReadProgress();
     initLazyFade();
     initSmoothAnchors();
+    initNavMenus();
+    initMobileAccordion();
   });
 
   /* ========================================================================
@@ -589,6 +591,164 @@
       target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
       target.setAttribute('tabindex', '-1');
       target.focus({ preventScroll: true });
+    });
+  }
+
+  /* ========================================================================
+     16. MEGA-MENÚ Y DESPLEGABLES DE ESCRITORIO
+        Se abren con el ratón y también con clic o teclado, para que funcionen
+        en portátiles táctiles y tabletas, donde el hover no existe.
+     ======================================================================== */
+  function initNavMenus() {
+    var items = document.querySelectorAll('.nav-desktop .has-dropdown');
+    if (!items.length) return;
+
+    var puedeHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    // El estado se lee del DOM: llevar un array aparte se desincronizaba
+    function hayAbiertos() {
+      return document.querySelectorAll('.nav-desktop .has-dropdown.is-open').length > 0;
+    }
+
+    function panelDe(item) {
+      return item.querySelector('.nav-mega, .nav-dropdown');
+    }
+
+    function abrir(item) {
+      cerrarTodos(item);
+      var panel = panelDe(item);
+      var trigger = item.querySelector('.nav-trigger');
+      if (!panel) return;
+      panel.hidden = false;
+      // El panel debe estar ya en el flujo antes de animarlo, o la
+      // transición no llega a arrancar.
+      window.requestAnimationFrame(function () {
+        item.classList.add('is-open');
+      });
+      if (trigger) trigger.setAttribute('aria-expanded', 'true');
+    }
+
+    function cerrar(item) {
+      var panel = panelDe(item);
+      var trigger = item.querySelector('.nav-trigger');
+      item.classList.remove('is-open');
+      if (trigger) trigger.setAttribute('aria-expanded', 'false');
+      // El panel se oculta al terminar la transición para no cortar la animación
+      if (panel) {
+        window.setTimeout(function () {
+          if (!item.classList.contains('is-open')) panel.hidden = true;
+        }, 300);
+      }
+    }
+
+    function cerrarTodos(excepto) {
+      Array.prototype.forEach.call(items, function (otro) {
+        if (otro !== excepto && otro.classList.contains('is-open')) cerrar(otro);
+      });
+    }
+
+    Array.prototype.forEach.call(items, function (item) {
+      var trigger = item.querySelector('.nav-trigger');
+      var panel = panelDe(item);
+      if (!trigger || !panel) return;
+
+      var temporizador = null;
+
+      if (puedeHover) {
+        item.addEventListener('mouseenter', function () {
+          window.clearTimeout(temporizador);
+          abrir(item);
+        });
+        item.addEventListener('mouseleave', function () {
+          // Margen para que el ratón pueda cruzar el hueco hasta el panel
+          temporizador = window.setTimeout(function () { cerrar(item); }, 180);
+        });
+      }
+
+      // Sin hover (táctil): el primer toque abre, el segundo navega
+      trigger.addEventListener('click', function (e) {
+        if (puedeHover) return;
+        if (!item.classList.contains('is-open')) {
+          e.preventDefault();
+          abrir(item);
+        }
+      });
+
+      // Teclado
+      trigger.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          abrir(item);
+          window.setTimeout(function () {
+            var primero = panel.querySelector('a, button');
+            if (primero) primero.focus();
+          }, 0);
+        }
+      });
+
+      panel.addEventListener('keydown', function (e) {
+        if (e.key !== 'Escape') return;
+        e.preventDefault();
+        cerrar(item);
+        trigger.focus();
+      });
+
+      // Al salir con el tabulador del panel, se cierra
+      item.addEventListener('focusout', function () {
+        window.setTimeout(function () {
+          if (!item.contains(document.activeElement)) cerrar(item);
+        }, 0);
+      });
+
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && hayAbiertos()) cerrarTodos(null);
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!hayAbiertos()) return;
+      if (!e.target.closest || !e.target.closest('.nav-desktop .has-dropdown.is-open')) {
+        cerrarTodos(null);
+      }
+    });
+
+    // Al hacer scroll con la cabecera oculta, no debe quedar un panel colgando
+    window.addEventListener('scroll', function () {
+      if (hayAbiertos() && document.querySelector('.site-header.header-hidden')) cerrarTodos(null);
+    }, { passive: true });
+  }
+
+  /* ========================================================================
+     17. ACORDEÓN DEL CAJÓN MÓVIL
+     ======================================================================== */
+  function initMobileAccordion() {
+    var botones = document.querySelectorAll('.m-acc-btn');
+    if (!botones.length) return;
+
+    Array.prototype.forEach.call(botones, function (btn) {
+      btn.addEventListener('click', function () {
+        var panel = document.getElementById(btn.getAttribute('aria-controls'));
+        if (!panel) return;
+        var abierto = btn.getAttribute('aria-expanded') === 'true';
+
+        if (abierto) {
+          btn.setAttribute('aria-expanded', 'false');
+          panel.hidden = true;
+          return;
+        }
+
+        // Solo una sección abierta a la vez: el cajón se mantiene corto
+        Array.prototype.forEach.call(botones, function (otro) {
+          if (otro === btn) return;
+          var p = document.getElementById(otro.getAttribute('aria-controls'));
+          otro.setAttribute('aria-expanded', 'false');
+          if (p) p.hidden = true;
+        });
+
+        btn.setAttribute('aria-expanded', 'true');
+        panel.hidden = false;
+      });
     });
   }
 })();

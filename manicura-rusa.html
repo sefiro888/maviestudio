@@ -90,63 +90,142 @@
           <a href="index.html" class="nav-link">Inicio</a>
         </div>
 
-        <div class="nav-item has-dropdown">
-          <a href="tratamientos.html" class="nav-link active">
+        <div class="nav-item has-dropdown has-mega">
+          <a href="tratamientos.html" class="nav-link nav-trigger active" aria-expanded="false" aria-controls="mega-tratamientos" aria-haspopup="true">
             <span>Tratamientos</span>
-            <svg class="dropdown-arrow" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 1l4 4 4-4"/></svg>
+            <svg class="dropdown-arrow" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg>
           </a>
-          <div class="nav-dropdown" role="menu">
-            <a href="faciales.html" class="nav-dropdown-item" role="menuitem">
-              <span class="nav-dropdown-title">Cuidado Facial</span>
-              <span class="nav-dropdown-desc">Limpiezas, Prebiotic, Vitamina C y Acné</span>
-            </a>
-            <a href="mirada.html" class="nav-dropdown-item" role="menuitem">
-              <span class="nav-dropdown-title">Cejas y Pestañas</span>
-              <span class="nav-dropdown-desc">Lifting, laminado, tinte y diseño</span>
-            </a>
-            <a href="manicura-pedicura.html" class="nav-dropdown-item is-current" role="menuitem">
-              <span class="nav-dropdown-title">Manicura &amp; Pedicura</span>
-              <span class="nav-dropdown-desc">Manicura rusa, acrygel y cuidado spa</span>
-            </a>
-            <a href="corporales.html" class="nav-dropdown-item" role="menuitem">
-              <span class="nav-dropdown-title">Maderoterapia Corporal</span>
-              <span class="nav-dropdown-desc">Sesiones de 30 min y 1 hora</span>
-            </a>
-            <a href="depilacion.html" class="nav-dropdown-item" role="menuitem">
-              <span class="nav-dropdown-title">Depilación Cera &amp; Láser</span>
-              <span class="nav-dropdown-desc">Láser diodo de alta eficacia y cera tibia</span>
-            </a>
-            <a href="cosmetica.html" class="nav-dropdown-item" role="menuitem">
-              <span class="nav-dropdown-title">Cosmética RESET Free Beauty</span>
-              <span class="nav-dropdown-desc">Selección botánica para casa</span>
-            </a>
-            <div class="nav-dropdown-divider"></div>
-            <a href="tratamientos.html" class="nav-dropdown-all" role="menuitem">
-              <span>Ver carta completa (26 servicios)</span>
-              <span>&rarr;</span>
-            </a>
+        <div class="nav-mega" id="mega-tratamientos" hidden>
+          <div class="container nav-mega-inner">
+            <div class="mega-grid">
+              <div class="mega-cat">
+                <a href="faciales.html" class="mega-cat-head">
+                  <span class="mega-thumb"><img src="assets/images/thumbs/faciales.jpg" alt="" aria-hidden="true" decoding="async"></span>
+                  <span class="mega-cat-text">
+                    <span class="mega-cat-name">Cuidado Facial</span>
+                    <span class="mega-count">10 tratamientos</span>
+                  </span>
+                </a>
+                <ul class="mega-sub">
+                  <li><a href="dermapen-facial.html">Dermapen Facial <span class="mega-price">65 €</span></a></li>
+                  <li><a href="peeling-quimico.html">Peeling Químico <span class="mega-price">55 €</span></a></li>
+                  <li><a href="limpieza-facial-profunda.html">Limpieza Profunda <span class="mega-price">45 €</span></a></li>
+                </ul>
+              </div>
+              <div class="mega-cat">
+                <a href="mirada.html" class="mega-cat-head">
+                  <span class="mega-thumb"><img src="assets/images/thumbs/mirada.jpg" alt="" aria-hidden="true" decoding="async"></span>
+                  <span class="mega-cat-text">
+                    <span class="mega-cat-name">Cejas y Pestañas</span>
+                    <span class="mega-count">4 tratamientos</span>
+                  </span>
+                </a>
+                <ul class="mega-sub">
+                  <li><a href="lifting-pestanas.html">Lifting de Pestañas <span class="mega-price">35 €</span></a></li>
+                  <li><a href="laminado-cejas.html">Laminado de Cejas</a></li>
+                  <li><a href="diseno-depilacion-cejas.html">Diseño de Cejas <span class="mega-price">10 €</span></a></li>
+                </ul>
+              </div>
+              <div class="mega-cat is-current">
+                <a href="manicura-pedicura.html" class="mega-cat-head">
+                  <span class="mega-thumb"><img src="assets/images/thumbs/unas.jpg" alt="" aria-hidden="true" decoding="async"></span>
+                  <span class="mega-cat-text">
+                    <span class="mega-cat-name">Manicura &amp; Pedicura</span>
+                    <span class="mega-count">8 tratamientos</span>
+                  </span>
+                </a>
+                <ul class="mega-sub">
+                  <li><a href="manicura-rusa.html">Manicura Rusa <span class="mega-price">30 €</span></a></li>
+                  <li><a href="extensiones-acrygel-gel.html">Extensión de Uñas <span class="mega-price">50 €</span></a></li>
+                  <li><a href="pedicura-semipermanente.html">Pedicura Completa <span class="mega-price">36 €</span></a></li>
+                </ul>
+              </div>
+              <div class="mega-cat">
+                <a href="corporales.html" class="mega-cat-head">
+                  <span class="mega-thumb"><img src="assets/images/thumbs/corporal.jpg" alt="" aria-hidden="true" decoding="async"></span>
+                  <span class="mega-cat-text">
+                    <span class="mega-cat-name">Maderoterapia</span>
+                    <span class="mega-count">2 tratamientos</span>
+                  </span>
+                </a>
+                <ul class="mega-sub">
+                  <li><a href="maderoterapia-1-hora.html">Sesión de 1 hora</a></li>
+                  <li><a href="maderoterapia-30-minutos.html">Sesión de 30 min</a></li>
+                </ul>
+              </div>
+              <div class="mega-cat">
+                <a href="depilacion.html" class="mega-cat-head">
+                  <span class="mega-thumb"><img src="assets/images/thumbs/depilacion.jpg" alt="" aria-hidden="true" decoding="async"></span>
+                  <span class="mega-cat-text">
+                    <span class="mega-cat-name">Depilación</span>
+                    <span class="mega-count">2 tratamientos</span>
+                  </span>
+                </a>
+                <ul class="mega-sub">
+                  <li><a href="depilacion-cera.html">Cera Tibia</a></li>
+                  <li><a href="depilacion-laser.html">Láser Diodo</a></li>
+                </ul>
+              </div>
+              <div class="mega-cat">
+                <a href="cosmetica.html" class="mega-cat-head">
+                  <span class="mega-thumb"><img src="assets/images/thumbs/cosmetica.jpg" alt="" aria-hidden="true" decoding="async"></span>
+                  <span class="mega-cat-text">
+                    <span class="mega-cat-name">Cosmética RESET</span>
+                    <span class="mega-count">Para casa</span>
+                  </span>
+                </a>
+              </div>
+            </div>
+
+            <aside class="mega-feature">
+              <span class="mega-feature-tag">Novedad</span>
+              <a href="dermapen-facial.html" class="mega-feature-card">
+                <span class="mega-feature-media"><img src="assets/images/thumbs/destacado.jpg" alt="" aria-hidden="true" decoding="async"></span>
+                <span class="mega-feature-body">
+                  <span class="mega-feature-name">Dermapen Facial</span>
+                  <span class="mega-feature-desc">Vitaminas, complejos antiedad y exosomas llevados en profundidad, elegidos para tu piel.</span>
+                  <span class="mega-feature-price">65 € <small>por sesión</small></span>
+                </span>
+              </a>
+              <a href="https://wa.me/34668508795?text=Hola%2C%20quisiera%20consultar%20disponibilidad%20en%20MAVI%C3%88%20Studio" class="btn btn-whatsapp btn-sm" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 14.99 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M9.53 7.5C9.36 7.5 9.09 7.57 8.87 7.8C8.65 8.04 8.02 8.63 8.02 9.83C8.02 11.04 8.9 12.2 9.02 12.37C9.15 12.53 10.74 15 13.21 16.06C15.26 16.94 15.68 16.77 16.12 16.73C16.57 16.69 17.56 16.14 17.76 15.58C17.96 15.01 17.96 14.53 17.9 14.43C17.84 14.33 17.68 14.27 17.43 14.15C17.19 14.03 15.97 13.43 15.74 13.35C15.52 13.27 15.35 13.23 15.19 13.47C15.02 13.72 14.55 14.27 14.4 14.44C14.26 14.61 14.12 14.63 13.87 14.5C13.63 14.38 12.84 14.12 11.91 13.29C11.18 12.64 10.69 11.84 10.55 11.6C10.41 11.35 10.53 11.22 10.66 11.1C10.77 10.98 10.91 10.8 11.03 10.65C11.16 10.5 11.2 10.39 11.28 10.22C11.37 10.05 11.32 9.91 11.26 9.79C11.2 9.67 10.7 8.44 10.49 7.94C10.29 7.46 10.08 7.52 9.92 7.51C9.77 7.5 9.6 7.5 9.53 7.5Z"/></svg><span>Consultar cita</span></a>
+            </aside>
+
+            <div class="mega-foot">
+              <a href="tratamientos.html" class="link-arrow">Ver la carta completa · 26 tratamientos &rarr;</a>
+              <span class="mega-foot-note"><span class="stars" aria-hidden="true">★★★★★</span> 4,9/5 en Google · 30 opiniones</span>
+            </div>
           </div>
+        </div>
         </div>
 
         <div class="nav-item has-dropdown">
-          <a href="sobre-mavie.html" class="nav-link">
+          <a href="sobre-mavie.html" class="nav-link nav-trigger" aria-expanded="false" aria-controls="dd-estudio" aria-haspopup="true">
             <span>El Estudio</span>
-            <svg class="dropdown-arrow" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 1l4 4 4-4"/></svg>
+            <svg class="dropdown-arrow" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg>
           </a>
-          <div class="nav-dropdown" role="menu" style="min-width: 260px;">
-            <a href="sobre-mavie.html" class="nav-dropdown-item" role="menuitem">
-              <span class="nav-dropdown-title">Sobre MAVIÈ</span>
-              <span class="nav-dropdown-desc">Filosofía, cabina y equipo (Marta)</span>
+        <div class="nav-dropdown nav-dropdown-rich" id="dd-estudio" role="menu" hidden>
+            <a href="sobre-mavie.html" class="nav-dd-item" role="menuitem">
+              <span class="nav-dd-thumb"><img src="assets/images/thumbs/estudio.jpg" alt="" aria-hidden="true" decoding="async"></span>
+              <span>
+                <span class="nav-dropdown-title">Sobre MAVIÈ</span>
+                <span class="nav-dropdown-desc">Filosofía, cabina y equipo</span>
+              </span>
             </a>
-            <a href="resultados.html" class="nav-dropdown-item" role="menuitem">
-              <span class="nav-dropdown-title">Resultados (Antes y Después)</span>
-              <span class="nav-dropdown-desc">Comparador interactivo de lifting y manicura</span>
+            <a href="resultados.html" class="nav-dd-item" role="menuitem">
+              <span class="nav-dd-thumb"><img src="assets/images/thumbs/trabajos.jpg" alt="" aria-hidden="true" decoding="async"></span>
+              <span>
+                <span class="nav-dropdown-title">Trabajos reales</span>
+                <span class="nav-dropdown-desc">Fotos de cabina, sin filtros</span>
+              </span>
             </a>
-            <a href="opiniones.html" class="nav-dropdown-item" role="menuitem">
-              <span class="nav-dropdown-title">Opiniones Google</span>
-              <span class="nav-dropdown-desc">Valoración 4,9/5 de clientas reales</span>
+            <a href="opiniones.html" class="nav-dd-item" role="menuitem">
+              <span class="nav-dd-thumb"><img src="assets/images/thumbs/opiniones.jpg" alt="" aria-hidden="true" decoding="async"></span>
+              <span>
+                <span class="nav-dropdown-title">Opiniones</span>
+                <span class="nav-dropdown-desc">4,9/5 en Google · 30 reseñas</span>
+              </span>
             </a>
-          </div>
+        </div>
         </div>
 
         <div class="nav-item">
@@ -156,8 +235,8 @@
       </nav>
 
       <div class="header-actions">
-        <a href="https://wa.me/34668508795?text=Hola,%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n%20o%20reservar%20cita%20en%20MAVI%C3%88%20Studio" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 14.99 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M9.53 7.5C9.36 7.5 9.09 7.57 8.87 7.8C8.65 8.04 8.02 8.63 8.02 9.83C8.02 11.04 8.9 12.2 9.02 12.37C9.15 12.53 10.74 15 13.21 16.06C15.26 16.94 15.68 16.77 16.12 16.73C16.57 16.69 17.56 16.14 17.76 15.58C17.96 15.01 17.96 14.53 17.9 14.43C17.84 14.33 17.68 14.27 17.43 14.15C17.19 14.03 15.97 13.43 15.74 13.35C15.52 13.27 15.35 13.23 15.19 13.47C15.02 13.72 14.55 14.27 14.4 14.44C14.26 14.61 14.12 14.63 13.87 14.5C13.63 14.38 12.84 14.12 11.91 13.29C11.18 12.64 10.69 11.84 10.55 11.6C10.41 11.35 10.53 11.22 10.66 11.1C10.77 10.98 10.91 10.8 11.03 10.65C11.16 10.5 11.2 10.39 11.28 10.22C11.37 10.05 11.32 9.91 11.26 9.79C11.2 9.67 10.7 8.44 10.49 7.94C10.29 7.46 10.08 7.52 9.92 7.51C9.77 7.5 9.6 7.5 9.53 7.5Z"/></svg>
+        <a href="https://wa.me/34668508795?text=Hola%2C%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n%20o%20reservar%20cita%20en%20MAVI%C3%88%20Studio" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 14.99 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M9.53 7.5C9.36 7.5 9.09 7.57 8.87 7.8C8.65 8.04 8.02 8.63 8.02 9.83C8.02 11.04 8.9 12.2 9.02 12.37C9.15 12.53 10.74 15 13.21 16.06C15.26 16.94 15.68 16.77 16.12 16.73C16.57 16.69 17.56 16.14 17.76 15.58C17.96 15.01 17.96 14.53 17.9 14.43C17.84 14.33 17.68 14.27 17.43 14.15C17.19 14.03 15.97 13.43 15.74 13.35C15.52 13.27 15.35 13.23 15.19 13.47C15.02 13.72 14.55 14.27 14.4 14.44C14.26 14.61 14.12 14.63 13.87 14.5C13.63 14.38 12.84 14.12 11.91 13.29C11.18 12.64 10.69 11.84 10.55 11.6C10.41 11.35 10.53 11.22 10.66 11.1C10.77 10.98 10.91 10.8 11.03 10.65C11.16 10.5 11.2 10.39 11.28 10.22C11.37 10.05 11.32 9.91 11.26 9.79C11.2 9.67 10.7 8.44 10.49 7.94C10.29 7.46 10.08 7.52 9.92 7.51C9.77 7.5 9.6 7.5 9.53 7.5Z"/></svg>
           <span>Reservar Cita</span>
         </a>
         <button class="btn-menu-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="menu-movil">
@@ -181,34 +260,102 @@
       </div>
       <button class="btn-close-drawer" aria-label="Cerrar menú">&times;</button>
     </div>
+
     <nav class="mobile-nav-links">
+      <a href="index.html" class="m-link">Inicio</a>
 
-      <a href="index.html">Inicio</a>
+      <div class="m-acc">
+        <button class="m-acc-btn" aria-expanded="true" aria-controls="m-panel-trat">
+          <span>Tratamientos</span>
+          <span class="m-acc-meta">26</span>
+          <svg class="dropdown-arrow" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg>
+        </button>
+        <div class="m-acc-panel" id="m-panel-trat">
+          <a href="faciales.html" class="m-cat">
+            <span class="m-cat-thumb"><img src="assets/images/thumbs/faciales.jpg" alt="" aria-hidden="true" decoding="async"></span>
+            <span class="m-cat-text">
+              <span class="m-cat-name">Cuidado Facial</span>
+              <span class="m-cat-count">10 tratamientos</span>
+            </span>
+          </a>
+          <a href="mirada.html" class="m-cat">
+            <span class="m-cat-thumb"><img src="assets/images/thumbs/mirada.jpg" alt="" aria-hidden="true" decoding="async"></span>
+            <span class="m-cat-text">
+              <span class="m-cat-name">Cejas y Pestañas</span>
+              <span class="m-cat-count">4 tratamientos</span>
+            </span>
+          </a>
+          <a href="manicura-pedicura.html" class="m-cat is-current">
+            <span class="m-cat-thumb"><img src="assets/images/thumbs/unas.jpg" alt="" aria-hidden="true" decoding="async"></span>
+            <span class="m-cat-text">
+              <span class="m-cat-name">Manicura &amp; Pedicura</span>
+              <span class="m-cat-count">8 tratamientos</span>
+            </span>
+          </a>
+          <a href="corporales.html" class="m-cat">
+            <span class="m-cat-thumb"><img src="assets/images/thumbs/corporal.jpg" alt="" aria-hidden="true" decoding="async"></span>
+            <span class="m-cat-text">
+              <span class="m-cat-name">Maderoterapia</span>
+              <span class="m-cat-count">2 tratamientos</span>
+            </span>
+          </a>
+          <a href="depilacion.html" class="m-cat">
+            <span class="m-cat-thumb"><img src="assets/images/thumbs/depilacion.jpg" alt="" aria-hidden="true" decoding="async"></span>
+            <span class="m-cat-text">
+              <span class="m-cat-name">Depilación</span>
+              <span class="m-cat-count">2 tratamientos</span>
+            </span>
+          </a>
+          <a href="cosmetica.html" class="m-cat">
+            <span class="m-cat-thumb"><img src="assets/images/thumbs/cosmetica.jpg" alt="" aria-hidden="true" decoding="async"></span>
+            <span class="m-cat-text">
+              <span class="m-cat-name">Cosmética RESET</span>
+              <span class="m-cat-count">Para casa</span>
+            </span>
+          </a>
+          <a href="tratamientos.html" class="m-all">Ver la carta completa &rarr;</a>
+        </div>
+      </div>
 
-      <div class="mobile-nav-section-title">Tratamientos</div>
-      <a href="tratamientos.html">Ver Carta Completa</a>
-      <a href="faciales.html" class="mobile-sublink">Cuidado Facial</a>
-      <a href="mirada.html" class="mobile-sublink">Cejas y Pestañas</a>
-      <a href="manicura-pedicura.html" class="mobile-sublink  active">Manicura & Pedicura</a>
-      <a href="corporales.html" class="mobile-sublink">Maderoterapia Corporal</a>
-      <a href="depilacion.html" class="mobile-sublink">Depilación Cera & Láser</a>
-      <a href="cosmetica.html" class="mobile-sublink">Cosmética RESET Free Beauty</a>
+      <div class="m-acc">
+        <button class="m-acc-btn" aria-expanded="false" aria-controls="m-panel-est">
+          <span>El Estudio</span>
+          <svg class="dropdown-arrow" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg>
+        </button>
+        <div class="m-acc-panel" id="m-panel-est" hidden>
+          <a href="sobre-mavie.html" class="m-cat">
+            <span class="m-cat-thumb"><img src="assets/images/thumbs/estudio.jpg" alt="" aria-hidden="true" decoding="async"></span>
+            <span class="m-cat-text">
+              <span class="m-cat-name">Sobre MAVIÈ</span>
+              <span class="m-cat-count">Filosofía, cabina y equipo</span>
+            </span>
+          </a>
+          <a href="resultados.html" class="m-cat">
+            <span class="m-cat-thumb"><img src="assets/images/thumbs/trabajos.jpg" alt="" aria-hidden="true" decoding="async"></span>
+            <span class="m-cat-text">
+              <span class="m-cat-name">Trabajos reales</span>
+              <span class="m-cat-count">Fotos de cabina, sin filtros</span>
+            </span>
+          </a>
+          <a href="opiniones.html" class="m-cat">
+            <span class="m-cat-thumb"><img src="assets/images/thumbs/opiniones.jpg" alt="" aria-hidden="true" decoding="async"></span>
+            <span class="m-cat-text">
+              <span class="m-cat-name">Opiniones</span>
+              <span class="m-cat-count">4,9/5 en Google · 30 reseñas</span>
+            </span>
+          </a>
+        </div>
+      </div>
 
-      <div class="mobile-nav-section-title">El Estudio</div>
-      <a href="sobre-mavie.html">Sobre MAVIÈ</a>
-      <a href="resultados.html">Resultados (Antes/Después)</a>
-      <a href="opiniones.html">Opiniones Google (4,9/5)</a>
-
-      <div class="mobile-nav-section-title">Contacto</div>
-      <a href="contacto.html">Contacto &amp; Cita Previa</a>
-
+      <a href="contacto.html" class="m-link">Contacto y cita previa</a>
     </nav>
+
     <div class="mobile-nav-footer">
-      <p><strong>Cita previa y consultas</strong></p>
-      <p>WhatsApp: <a href="https://wa.me/34668508795">668 50 87 95</a></p>
-      <p>C. del Marqués de la Cadena, 42, 50014 Zaragoza</p>
-      <p style="margin-top:0.7rem;">Lun y Mar 12–20h · Mié 9:30–13:30 y 16–20h<br>Jue y Vie 9:30–17:30h · Sáb y Dom cerrado</p>
-      <p style="margin-top:0.8rem;"><a href="https://www.instagram.com/mavie.sttudio/" target="_blank" rel="noopener">Instagram: @mavie.sttudio</a></p>
+      <a href="https://wa.me/34668508795?text=Hola%2C%20me%20gustar%C3%ADa%20reservar%20cita%20en%20MAVI%C3%88%20Studio" class="btn btn-whatsapp" target="_blank" rel="noopener" style="width:100%;justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 14.99 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M9.53 7.5C9.36 7.5 9.09 7.57 8.87 7.8C8.65 8.04 8.02 8.63 8.02 9.83C8.02 11.04 8.9 12.2 9.02 12.37C9.15 12.53 10.74 15 13.21 16.06C15.26 16.94 15.68 16.77 16.12 16.73C16.57 16.69 17.56 16.14 17.76 15.58C17.96 15.01 17.96 14.53 17.9 14.43C17.84 14.33 17.68 14.27 17.43 14.15C17.19 14.03 15.97 13.43 15.74 13.35C15.52 13.27 15.35 13.23 15.19 13.47C15.02 13.72 14.55 14.27 14.4 14.44C14.26 14.61 14.12 14.63 13.87 14.5C13.63 14.38 12.84 14.12 11.91 13.29C11.18 12.64 10.69 11.84 10.55 11.6C10.41 11.35 10.53 11.22 10.66 11.1C10.77 10.98 10.91 10.8 11.03 10.65C11.16 10.5 11.2 10.39 11.28 10.22C11.37 10.05 11.32 9.91 11.26 9.79C11.2 9.67 10.7 8.44 10.49 7.94C10.29 7.46 10.08 7.52 9.92 7.51C9.77 7.5 9.6 7.5 9.53 7.5Z"/></svg><span>Reservar por WhatsApp</span>
+      </a>
+      <p style="margin-top:0.8rem;"><span class="open-status" data-open-badge>Consultar horario</span></p>
+      <p>C. del Marqués de la Cadena, 42 · Zaragoza · <a href="https://www.instagram.com/mavie.sttudio/" target="_blank" rel="noopener">@mavie.sttudio</a></p>
     </div>
   </aside>
 
