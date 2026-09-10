@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /_backup_v1/
+Disallow: /_backup_v2/
+Disallow: /_unused_stock/
+Disallow: /_originales_generadas/
+
+Sitemap: https://maviestudio.es/sitemap.xml

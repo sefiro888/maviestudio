@@ -1,0 +1,594 @@
+/**
+ * MAVIÈ STUDIO — Estética y Bienestar (Zaragoza)
+ * JavaScript modular, ligero y accesible.
+ */
+(function () {
+  'use strict';
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.addEventListener('DOMContentLoaded', function () {
+    initHeader();
+    initMobileNav();
+    initBeforeAfterSliders();
+    initMultiTabComparator();
+    initFaqAccordion();
+    initCategoryFilter();
+    initHomeFilterPills();
+    initScrollReveal();
+    initWaTooltip();
+    initOpeningHours();
+    initMobileCtaBar();
+    initBackToTop();
+    initReadProgress();
+    initLazyFade();
+    initSmoothAnchors();
+  });
+
+  /* ========================================================================
+     1. CABECERA: sombra al hacer scroll y ocultación al bajar
+     ======================================================================== */
+  function initHeader() {
+    var header = document.querySelector('.site-header');
+    if (!header) return;
+
+    var lastY = window.scrollY;
+    var ticking = false;
+
+    function update() {
+      var y = window.scrollY;
+      header.classList.toggle('scrolled', y > 25);
+
+      // Se oculta al bajar (solo tras superar la zona de cabecera) y reaparece al subir
+      var drawerOpen = document.body.classList.contains('nav-open');
+      if (!drawerOpen && y > 320 && y > lastY + 6) {
+        header.classList.add('header-hidden');
+      } else if (y < lastY - 6 || y <= 320) {
+        header.classList.remove('header-hidden');
+      }
+
+      lastY = y;
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    }, { passive: true });
+
+    // Altura real de la cabecera para scroll-padding
+    function measure() {
+      document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
+    }
+    measure();
+    window.addEventListener('resize', measure, { passive: true });
+    update();
+  }
+
+  /* ========================================================================
+     2. MENÚ MÓVIL con trampa de foco
+     ======================================================================== */
+  function initMobileNav() {
+    var toggleBtn = document.querySelector('.btn-menu-toggle');
+    var drawer = document.querySelector('.mobile-nav-drawer');
+    var backdrop = document.querySelector('.mobile-nav-backdrop');
+    var closeBtn = document.querySelector('.btn-close-drawer');
+    if (!toggleBtn || !drawer || !backdrop) return;
+
+    var FOCUSABLE = 'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+    function open() {
+      drawer.classList.add('open');
+      backdrop.classList.add('open');
+      drawer.setAttribute('aria-hidden', 'false');
+      toggleBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+      document.body.classList.add('nav-open');
+      var first = drawer.querySelector(FOCUSABLE);
+      if (first) first.focus();
+    }
+
+    function close() {
+      drawer.classList.remove('open');
+      backdrop.classList.remove('open');
+      drawer.setAttribute('aria-hidden', 'true');
+      toggleBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      document.body.classList.remove('nav-open');
+      toggleBtn.focus();
+    }
+
+    toggleBtn.addEventListener('click', open);
+    if (closeBtn) closeBtn.addEventListener('click', close);
+    backdrop.addEventListener('click', close);
+
+    document.addEventListener('keydown', function (e) {
+      if (!drawer.classList.contains('open')) return;
+
+      if (e.key === 'Escape') {
+        close();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+
+      var items = Array.prototype.filter.call(
+        drawer.querySelectorAll(FOCUSABLE),
+        function (el) { return el.offsetParent !== null; }
+      );
+      if (!items.length) return;
+
+      var first = items[0];
+      var last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+
+    Array.prototype.forEach.call(drawer.querySelectorAll('a'), function (link) {
+      link.addEventListener('click', close);
+    });
+
+    // Al pasar a escritorio, el cajón nunca debe quedar abierto
+    window.addEventListener('resize', function () {
+      if (window.innerWidth >= 992 && drawer.classList.contains('open')) close();
+    }, { passive: true });
+  }
+
+  /* ========================================================================
+     3. COMPARADOR ANTES / DESPUÉS
+        Pointer Events + teclado + semántica de slider
+     ======================================================================== */
+  function initBeforeAfterSliders() {
+    var containers = document.querySelectorAll('.ba-container');
+    if (!containers.length) return;
+
+    Array.prototype.forEach.call(containers, function (container) {
+      var after = container.querySelector('.ba-after');
+      var handle = container.querySelector('.ba-handle');
+      if (!after || !handle) return;
+
+      var pct = 50;
+      var dragging = false;
+
+      container.setAttribute('tabindex', '0');
+      container.setAttribute('role', 'slider');
+      container.setAttribute('aria-label', 'Comparador antes y después: usa las flechas para desplazar');
+      container.setAttribute('aria-valuemin', '0');
+      container.setAttribute('aria-valuemax', '100');
+
+      function apply() {
+        after.style.width = pct + '%';
+        handle.style.left = pct + '%';
+        container.setAttribute('aria-valuenow', Math.round(pct));
+        container.setAttribute('aria-valuetext', 'Después visible al ' + Math.round(pct) + '%');
+      }
+
+      function setFromX(clientX) {
+        var rect = container.getBoundingClientRect();
+        if (!rect.width) return;
+        var x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+        pct = (x / rect.width) * 100;
+        apply();
+      }
+
+      function onMove(e) {
+        if (!dragging) return;
+        e.preventDefault();
+        setFromX(e.clientX);
+      }
+
+      function stop() {
+        dragging = false;
+        document.removeEventListener('pointermove', onMove);
+        document.removeEventListener('pointerup', stop);
+      }
+
+      container.addEventListener('pointerdown', function (e) {
+        dragging = true;
+        setFromX(e.clientX);
+        document.addEventListener('pointermove', onMove);
+        document.addEventListener('pointerup', stop);
+      });
+
+      container.addEventListener('keydown', function (e) {
+        var step = e.shiftKey ? 10 : 3;
+        if (e.key === 'ArrowLeft') { pct = Math.max(0, pct - step); }
+        else if (e.key === 'ArrowRight') { pct = Math.min(100, pct + step); }
+        else if (e.key === 'Home') { pct = 0; }
+        else if (e.key === 'End') { pct = 100; }
+        else { return; }
+        e.preventDefault();
+        apply();
+      });
+
+      // La imagen recortada debe conservar el ancho completo del contenedor
+      function sizeInner() {
+        var img = after.querySelector('img');
+        if (img && container.offsetWidth) img.style.width = container.offsetWidth + 'px';
+      }
+      window.addEventListener('resize', sizeInner, { passive: true });
+      window.addEventListener('ba:resize', sizeInner);
+      sizeInner();
+      apply();
+    });
+  }
+
+  /* ========================================================================
+     4. PESTAÑAS DEL COMPARADOR
+     ======================================================================== */
+  function initMultiTabComparator() {
+    var tabs = document.querySelectorAll('.ba-tab-btn');
+    var panels = document.querySelectorAll('.ba-panel');
+    if (!tabs.length || !panels.length) return;
+
+    Array.prototype.forEach.call(tabs, function (btn) {
+      btn.addEventListener('click', function () {
+        Array.prototype.forEach.call(tabs, function (b) {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        Array.prototype.forEach.call(panels, function (p) {
+          p.classList.remove('active');
+        });
+
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+
+        var panel = document.getElementById(btn.getAttribute('data-target'));
+        if (panel) {
+          panel.classList.add('active');
+          // Los comparadores ocultos no tienen ancho: hay que recalcularlos al mostrarlos
+          window.dispatchEvent(new Event('ba:resize'));
+        }
+      });
+    });
+  }
+
+  /* ========================================================================
+     5. ACORDEÓN DE PREGUNTAS FRECUENTES
+     ======================================================================== */
+  function initFaqAccordion() {
+    var items = document.querySelectorAll('.faq-item');
+    if (!items.length) return;
+
+    Array.prototype.forEach.call(items, function (item) {
+      item.addEventListener('toggle', function () {
+        if (!item.open) return;
+        Array.prototype.forEach.call(items, function (other) {
+          if (other !== item && other.open) other.removeAttribute('open');
+        });
+      });
+    });
+  }
+
+  /* ========================================================================
+     6 y 7. FILTROS DE TRATAMIENTOS
+     ======================================================================== */
+  function filterCards(cards, value) {
+    var shown = 0;
+    Array.prototype.forEach.call(cards, function (card) {
+      var match = value === 'all' || card.getAttribute('data-category') === value;
+      card.hidden = !match;
+      card.style.display = match ? '' : 'none';
+      if (match) {
+        shown++;
+        card.classList.add('is-visible');
+      }
+    });
+    return shown;
+  }
+
+  function emptyNotice(grid) {
+    var box = grid.parentNode.querySelector('.filter-empty');
+    if (!box) {
+      box = document.createElement('p');
+      box.className = 'filter-empty';
+      box.setAttribute('role', 'status');
+      box.style.cssText = 'text-align:center;padding:2.5rem 1rem;color:var(--muted-text);';
+      box.textContent = 'No hay tratamientos en esta categoría. Prueba con otra selección.';
+      grid.parentNode.insertBefore(box, grid.nextSibling);
+    }
+    return box;
+  }
+
+  function initCategoryFilter() {
+    var btns = document.querySelectorAll('.filter-btn');
+    var cards = document.querySelectorAll('.treatment-card[data-category]');
+    if (!btns.length || !cards.length) return;
+
+    var grid = cards[0].parentNode;
+    var notice = emptyNotice(grid);
+    notice.hidden = true;
+
+    Array.prototype.forEach.call(btns, function (btn) {
+      btn.setAttribute('aria-pressed', btn.classList.contains('btn-primary') ? 'true' : 'false');
+
+      btn.addEventListener('click', function () {
+        Array.prototype.forEach.call(btns, function (b) {
+          b.classList.remove('btn-primary');
+          b.classList.add('btn-outline');
+          b.setAttribute('aria-pressed', 'false');
+        });
+        btn.classList.remove('btn-outline');
+        btn.classList.add('btn-primary');
+        btn.setAttribute('aria-pressed', 'true');
+
+        notice.hidden = filterCards(cards, btn.getAttribute('data-filter')) > 0;
+      });
+    });
+  }
+
+  function initHomeFilterPills() {
+    var pills = document.querySelectorAll('.filter-tab-pill');
+    var cards = document.querySelectorAll('.treatments-grid .treatment-card');
+    if (!pills.length || !cards.length) return;
+
+    var grid = document.querySelector('.treatments-grid');
+    var notice = emptyNotice(grid);
+    notice.hidden = true;
+
+    Array.prototype.forEach.call(pills, function (pill) {
+      pill.setAttribute('aria-pressed', pill.classList.contains('active') ? 'true' : 'false');
+
+      pill.addEventListener('click', function () {
+        Array.prototype.forEach.call(pills, function (p) {
+          p.classList.remove('active');
+          p.setAttribute('aria-pressed', 'false');
+        });
+        pill.classList.add('active');
+        pill.setAttribute('aria-pressed', 'true');
+
+        notice.hidden = filterCards(cards, pill.getAttribute('data-category')) > 0;
+      });
+    });
+  }
+
+  /* ========================================================================
+     8. REVELADO AL HACER SCROLL
+     ======================================================================== */
+  function initScrollReveal() {
+    var els = document.querySelectorAll('.reveal-on-scroll');
+    if (!els.length) return;
+
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      Array.prototype.forEach.call(els, function (el) { el.classList.add('is-visible'); });
+      return;
+    }
+
+    var observer = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        obs.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -60px 0px', threshold: 0.08 });
+
+    Array.prototype.forEach.call(els, function (el) { observer.observe(el); });
+  }
+
+  /* ========================================================================
+     9. AVISO FLOTANTE DE WHATSAPP (una vez por sesión)
+     ======================================================================== */
+  function initWaTooltip() {
+    var tooltip = document.querySelector('.whatsapp-tooltip');
+    var closeBtn = document.querySelector('.whatsapp-tooltip-close');
+    if (!tooltip) return;
+
+    var KEY = 'mavie-wa-tip';
+    try {
+      if (window.sessionStorage && sessionStorage.getItem(KEY)) return;
+    } catch (err) { /* almacenamiento no disponible */ }
+
+    var timer = setTimeout(function () {
+      tooltip.classList.add('is-visible');
+    }, 6000);
+
+    var hide = setTimeout(function () {
+      tooltip.classList.remove('is-visible');
+    }, 20000);
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        tooltip.classList.remove('is-visible');
+        clearTimeout(timer);
+        clearTimeout(hide);
+        try { sessionStorage.setItem(KEY, '1'); } catch (err) { /* ignorar */ }
+      });
+    }
+  }
+
+  /* ========================================================================
+     10. HORARIO REAL: estado abierto/cerrado y día en curso
+     ======================================================================== */
+  // Índice = día JS (0 domingo). Tramos en minutos desde medianoche.
+  var SCHEDULE = {
+    0: [],
+    1: [[720, 1200]],
+    2: [[720, 1200]],
+    3: [[570, 810], [960, 1200]],
+    4: [[570, 1050]],
+    5: [[570, 1050]],
+    6: []
+  };
+  var DAY_NAMES = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+
+  function fmt(mins) {
+    var h = Math.floor(mins / 60);
+    var m = mins % 60;
+    return h + (m ? ':' + (m < 10 ? '0' + m : m) : ':00') + 'h';
+  }
+
+  function nextOpening(day, minutes) {
+    for (var i = 0; i < 8; i++) {
+      var d = (day + i) % 7;
+      var slots = SCHEDULE[d];
+      for (var j = 0; j < slots.length; j++) {
+        if (i > 0 || slots[j][0] > minutes) {
+          return { day: d, start: slots[j][0], today: i === 0, tomorrow: i === 1 };
+        }
+      }
+    }
+    return null;
+  }
+
+  function initOpeningHours() {
+    var badges = document.querySelectorAll('[data-open-badge]');
+    var now = new Date();
+    var day = now.getDay();
+    var mins = now.getHours() * 60 + now.getMinutes();
+
+    // Resaltar la fila del día en curso
+    Array.prototype.forEach.call(document.querySelectorAll('.hours-table tr[data-day]'), function (tr) {
+      if (parseInt(tr.getAttribute('data-day'), 10) === day) tr.classList.add('is-today');
+    });
+
+    if (!badges.length) return;
+
+    var openNow = null;
+    SCHEDULE[day].forEach(function (slot) {
+      if (mins >= slot[0] && mins < slot[1]) openNow = slot;
+    });
+
+    var label, cls;
+    if (openNow) {
+      label = 'Abierto ahora · cierra a las ' + fmt(openNow[1]);
+      cls = 'is-open';
+    } else {
+      var next = nextOpening(day, mins);
+      cls = 'is-closed';
+      if (!next) {
+        label = 'Cerrado · escríbenos por WhatsApp';
+      } else if (next.today) {
+        label = 'Cerrado · abre hoy a las ' + fmt(next.start);
+      } else if (next.tomorrow) {
+        label = 'Cerrado · abre mañana a las ' + fmt(next.start);
+      } else {
+        label = 'Cerrado · abre el ' + DAY_NAMES[next.day] + ' a las ' + fmt(next.start);
+      }
+    }
+
+    Array.prototype.forEach.call(badges, function (b) {
+      b.textContent = label;
+      b.classList.remove('is-open', 'is-closed');
+      b.classList.add(cls);
+    });
+  }
+
+  /* ========================================================================
+     11. BARRA DE ACCIÓN MÓVIL
+     ======================================================================== */
+  function initMobileCtaBar() {
+    var bar = document.querySelector('.mobile-cta-bar');
+    if (!bar) return;
+
+    document.body.classList.add('has-mobile-cta');
+    var ticking = false;
+
+    function update() {
+      var show = window.scrollY > 420;
+      bar.classList.toggle('is-visible', show);
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    }, { passive: true });
+    update();
+  }
+
+  /* ========================================================================
+     12. VOLVER ARRIBA
+     ======================================================================== */
+  function initBackToTop() {
+    var btn = document.querySelector('.back-to-top');
+    if (!btn) return;
+
+    var ticking = false;
+    function update() {
+      btn.classList.toggle('is-visible', window.scrollY > 700);
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    }, { passive: true });
+
+    btn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+    update();
+  }
+
+  /* ========================================================================
+     13. BARRA DE PROGRESO DE LECTURA
+     ======================================================================== */
+  function initReadProgress() {
+    var bar = document.createElement('div');
+    bar.className = 'read-progress';
+    document.body.appendChild(bar);
+
+    var ticking = false;
+    function update() {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = h > 0 ? (window.scrollY / h) * 100 + '%' : '0';
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    }, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    update();
+  }
+
+  /* ========================================================================
+     14. APARICIÓN SUAVE DE LAS IMÁGENES DIFERIDAS
+     ======================================================================== */
+  function initLazyFade() {
+    var imgs = document.querySelectorAll('img[loading="lazy"]');
+    Array.prototype.forEach.call(imgs, function (img) {
+      if (img.complete && img.naturalWidth) return;
+      img.classList.add('lazy-fade');
+      img.addEventListener('load', function () { img.classList.add('is-loaded'); });
+      img.addEventListener('error', function () { img.classList.add('is-loaded'); });
+    });
+  }
+
+  /* ========================================================================
+     15. ANCLAS SUAVES
+     ======================================================================== */
+  function initSmoothAnchors() {
+    document.addEventListener('click', function (e) {
+      var link = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+      if (!link) return;
+
+      var id = link.getAttribute('href');
+      if (!id || id === '#') return;
+
+      var target = document.querySelector(id);
+      if (!target) return;
+
+      e.preventDefault();
+      target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+    });
+  }
+})();

@@ -1,0 +1,13 @@
+# Copias de seguridad y material descartado (no forman parte del sitio)
+_backup_v1/
+_backup_v2/
+_unused_stock/
+_originales_generadas/
+
+# Configuración local del entorno de desarrollo
+.claude/
+
+# Sistema
+Thumbs.db
+desktop.ini
+.DS_Store
