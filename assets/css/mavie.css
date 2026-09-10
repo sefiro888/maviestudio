@@ -2557,3 +2557,17 @@ img[src*="/plates/"] {
   .chat-panel, .chat-msg { transition: none !important; animation: none !important; }
   .chat-typing i { animation: none !important; }
 }
+
+/* La regla global «p { color: var(--muted-text) }» de la hoja base gana por
+   especificidad al color heredado de la burbuja, y el texto del usuario
+   quedaba ilegible sobre el malva. Se fija explícitamente. */
+.chat-msg--yo,
+.chat-msg--yo p,
+.chat-msg--yo strong,
+.chat-msg--yo em,
+.chat-msg--yo li { color: #fff; }
+
+.chat-msg--bot p,
+.chat-msg--bot li { color: var(--ink-soft); }
+.chat-msg--bot .chat-nota { color: var(--muted-text); }
+.chat-msg--bot .chat-ficha-m { color: var(--muted-text); }
