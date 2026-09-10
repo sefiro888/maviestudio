@@ -25,6 +25,7 @@
     initSmoothAnchors();
     initNavMenus();
     initMobileAccordion();
+    initRecomendador();
   });
 
   /* ========================================================================
@@ -749,6 +750,192 @@
         btn.setAttribute('aria-expanded', 'true');
         panel.hidden = false;
       });
+    });
+  }
+
+  /* ========================================================================
+     18. RECOMENDADOR DE TRATAMIENTO
+        Tres preguntas y dos propuestas. Todo en el navegador: no se envía
+        ni se guarda nada.
+     ======================================================================== */
+  function initRecomendador() {
+    var caja = document.querySelector('[data-reco]');
+    var fuente = document.getElementById('reco-datos');
+    if (!caja || !fuente) return;
+
+    var datos;
+    try { datos = JSON.parse(fuente.textContent); } catch (err) { return; }
+    if (!datos || !datos.length) return;
+
+    var pasos = caja.querySelectorAll('.reco-paso');
+    var relleno = caja.querySelector('.reco-barra-fill');
+    var cuenta = caja.querySelector('.reco-cuenta strong');
+    var atras = caja.querySelector('.reco-atras');
+    var resultado = caja.querySelector('.reco-result');
+    var tarjetas = caja.querySelector('.reco-cards');
+    var reiniciar = caja.querySelector('[data-reco-reset]');
+    var pie = caja.querySelector('.reco-pie');
+    var form = caja.querySelector('.reco-form');
+
+    var respuestas = {};
+    var actual = 1;
+
+    var MINUTOS = { corto: 35, medio: 60, largo: 95 };
+
+    function mostrar(n) {
+      actual = n;
+      Array.prototype.forEach.call(pasos, function (p) {
+        p.hidden = parseInt(p.getAttribute('data-paso'), 10) !== n;
+      });
+      relleno.style.width = Math.round((n / pasos.length) * 100) + '%';
+      if (cuenta) cuenta.textContent = n;
+      atras.hidden = n === 1;
+      var primero = pasos[n - 1].querySelector('.reco-op');
+      if (primero) primero.focus();
+    }
+
+    function puntuar(t) {
+      // Fuera de la categoría elegida no compite
+      if (t.c !== respuestas.q1) return null;
+      // Los complementos no se reservan solos: se ofrecen aparte
+      if (t.add) return null;
+
+      var punt = 100;
+
+      // Cercanía a la duración disponible
+      var objetivo = MINUTOS[respuestas.q2] || 60;
+      punt -= Math.abs(t.m - objetivo) * 0.6;
+
+      // Con poco tiempo, lo que no cabe se descarta de verdad
+      if (respuestas.q2 === 'corto' && t.m > 55) punt -= 30;
+
+      // Primera visita: se prioriza lo sencillo y se evita lo avanzado
+      if (respuestas.q3 === 'si') {
+        punt += t.nv ? 18 : -22;
+      } else if (!t.nv) {
+        punt += 8;
+      }
+
+      // Con el precio cerrado se decide mejor
+      if (t.p) punt += 6;
+
+      return punt;
+    }
+
+    function motivo(t) {
+      if (respuestas.q3 === 'si' && t.nv) return 'Buen punto de partida si es tu primera vez';
+      if (respuestas.q2 === 'corto' && t.m <= 45) return 'Entra de sobra en el tiempo que tienes';
+      if (respuestas.q2 === 'largo' && t.m >= 60) return 'Aprovecha el tiempo del que dispones';
+      if (respuestas.q3 === 'no' && !t.nv) return 'Un paso más si ya conoces la casa';
+      return 'Encaja con lo que nos cuentas';
+    }
+
+    function pintar() {
+      var orden = datos
+        .map(function (t) { return { t: t, p: puntuar(t) }; })
+        .filter(function (x) { return x.p !== null; })
+        .sort(function (a, b) { return b.p - a.p; });
+
+      // La segunda propuesta busca otro tipo dentro de la categoría: dos
+      // pedicuras seguidas para «mis uñas» no ayudan a decidir.
+      var lista = orden.slice(0, 1);
+      if (orden.length > 1) {
+        var distinta = null;
+        for (var i = 1; i < orden.length; i++) {
+          if (orden[i].t.g !== lista[0].t.g) { distinta = orden[i]; break; }
+        }
+        // Solo se fuerza la variedad si la alternativa sigue encajando:
+        // ofrecer algo mucho peor por ser distinto no ayuda a nadie.
+        var vale = distinta && (orden[1].p - distinta.p) <= 20;
+        lista.push(vale ? distinta : orden[1]);
+      }
+
+      tarjetas.innerHTML = lista.map(function (x, i) {
+        var t = x.t;
+        var precio = t.p
+          ? '<span class="reco-card-precio">' + t.p + ' €</span>'
+          : '<span class="reco-card-precio is-pendiente">Precio a confirmar</span>';
+        var dur = t.dur ? '<span class="reco-card-dur">⏱️ ' + t.dur + '</span>' : '';
+        var wa = 'https://wa.me/34668508795?text=' +
+          encodeURIComponent('Hola, me gustaría reservar cita para ' + t.n + ' en MAVIÈ Studio.');
+
+        return '' +
+          '<article class="reco-card' + (i === 0 ? ' is-primera' : '') + '">' +
+            (i === 0 ? '<span class="reco-card-tag">Nuestra primera opción</span>' : '') +
+            '<a class="reco-card-media" href="' + t.s + '.html" tabindex="-1" aria-hidden="true">' +
+              '<img src="' + t.img + '" alt="" loading="lazy" decoding="async">' +
+            '</a>' +
+            '<div class="reco-card-body">' +
+              '<span class="reco-card-motivo">' + motivo(t) + '</span>' +
+              '<h3 class="reco-card-nombre"><a href="' + t.s + '.html">' + t.n + '</a></h3>' +
+              '<p class="reco-card-desc">' + t.d + '</p>' +
+              '<div class="reco-card-meta">' + precio + dur + '</div>' +
+              '<div class="reco-card-cta">' +
+                '<a class="btn btn-whatsapp btn-sm" href="' + wa + '" target="_blank" rel="noopener">Reservar por WhatsApp</a>' +
+                '<a class="link-arrow" href="' + t.s + '.html">Ver detalles &rarr;</a>' +
+              '</div>' +
+            '</div>' +
+          '</article>';
+      }).join('');
+
+      // El complemento se propone como añadido, nunca como opción principal
+      var extra = caja.querySelector('.reco-extra');
+      var comp = datos.filter(function (x) { return x.add && x.c === respuestas.q1; })[0];
+      if (extra) extra.remove();
+      if (comp) {
+        var p = document.createElement('p');
+        p.className = 'reco-extra';
+        p.innerHTML = 'Y si quieres rematarlo: puedes añadir <a href="' + comp.s + '.html">' +
+          comp.n + '</a> a cualquier manicura o pedicura por <strong>' + comp.p + ' €</strong>.';
+        tarjetas.insertAdjacentElement('afterend', p);
+      }
+
+      form.hidden = true;
+      pie.hidden = true;
+      resultado.hidden = false;
+      relleno.style.width = '100%';
+      resultado.focus();
+    }
+
+    caja.addEventListener('click', function (e) {
+      var op = e.target.closest ? e.target.closest('.reco-op') : null;
+      if (!op) return;
+
+      respuestas[op.getAttribute('data-q')] = op.getAttribute('data-v');
+
+      var hermanos = op.parentNode.querySelectorAll('.reco-op');
+      Array.prototype.forEach.call(hermanos, function (b) {
+        b.classList.toggle('is-elegida', b === op);
+      });
+
+      if (actual < pasos.length) {
+        window.setTimeout(function () { mostrar(actual + 1); }, 180);
+      } else {
+        window.setTimeout(pintar, 180);
+      }
+    });
+
+    atras.addEventListener('click', function () {
+      if (actual > 1) mostrar(actual - 1);
+    });
+
+    reiniciar.addEventListener('click', function () {
+      respuestas = {};
+      Array.prototype.forEach.call(caja.querySelectorAll('.reco-op'), function (b) {
+        b.classList.remove('is-elegida');
+      });
+      resultado.hidden = true;
+      form.hidden = false;
+      pie.hidden = false;
+      tarjetas.innerHTML = '';
+      var ex = caja.querySelector('.reco-extra');
+      if (ex) ex.remove();
+      mostrar(1);
+    });
+
+    // Estado inicial sin robar el foco al cargar la página
+    Array.prototype.forEach.call(pasos, function (p) {
+      p.hidden = parseInt(p.getAttribute('data-paso'), 10) !== 1;
     });
   }
 })();

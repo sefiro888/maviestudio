@@ -1793,18 +1793,6 @@ img[src*="/plates/"] {
 }
 .mega-foot-link:hover { background-color: var(--rose-deep); border-color: var(--rose-deep); color: #fff; }
 
-/* ==========================================================================
-   23. MENOS ADORNO EN MÓVIL
-   La marca de agua y la cinta pesan y distraen en pantalla pequeña.
-   ========================================================================== */
-@media (max-width: 767px) {
-  .hero-marquee { display: none; }
-  .hero-grain { opacity: 0.18; }
-  .hero-watermark { font-size: 22rem; color: rgba(142, 111, 108, 0.04); }
-  .hero-cine-bg::after { display: none; }
-  .review-card::before { font-size: 3.2rem; opacity: 0.7; }
-  .section-header .section-title::after { margin-top: 0.7rem; }
-}
 
 /* ==========================================================================
    24. CAJÓN MÓVIL — ACABADO
@@ -1984,3 +1972,284 @@ img[src*="/plates/"] {
   .insta-floating { width: 40px; height: 40px; }
   .insta-floating svg { width: 19px; height: 19px; }
 }
+
+/* ==========================================================================
+   25. RECOMENDADOR DE TRATAMIENTO
+   ========================================================================== */
+.reco {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: clamp(1.4rem, 3.5vw, 2.4rem);
+  border-radius: var(--radius-xl);
+  background: linear-gradient(160deg, var(--warm-white), var(--blush-soft));
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-md);
+}
+
+.reco-barra {
+  height: 3px;
+  border-radius: 3px;
+  background-color: var(--border-light);
+  overflow: hidden;
+  margin-bottom: clamp(1.4rem, 3vw, 2rem);
+}
+.reco-barra-fill {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--rose), var(--rose-deep));
+  transition: width 0.45s var(--ease-out-soft);
+}
+
+.reco-paso { border: 0; margin: 0; padding: 0; min-width: 0; }
+.reco-paso[hidden] { display: none; }
+
+.reco-preg {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0;
+  margin-bottom: 1.2rem;
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 3.2vw, 1.95rem);
+  line-height: 1.2;
+  color: var(--ink);
+}
+.reco-num {
+  flex-shrink: 0;
+  display: grid;
+  place-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--rose-deep), var(--rose));
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.reco-ops {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+}
+@media (min-width: 620px) { .reco-ops { grid-template-columns: repeat(2, 1fr); } }
+
+.reco-op {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  text-align: left;
+  padding: 0.9rem 1.1rem;
+  min-height: 62px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background-color: var(--warm-white);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast),
+              transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.reco-op:hover {
+  border-color: var(--rose);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+.reco-op.is-elegida {
+  border-color: var(--rose-deep);
+  background-color: var(--blush-soft);
+  box-shadow: 0 0 0 1px var(--rose-deep) inset;
+}
+.reco-op-t { font-size: 1rem; font-weight: 600; color: var(--ink); }
+.reco-op-d { font-size: 0.8rem; color: var(--muted-text); line-height: 1.4; }
+
+.reco-pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.4rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-light);
+}
+.reco-pie[hidden] { display: none; }
+.reco-atras {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--rose-deep);
+  padding: 0.3rem 0;
+}
+.reco-atras[hidden] { display: none; }
+.reco-cuenta { font-size: 0.78rem; color: var(--muted-text); letter-spacing: 0.04em; }
+.reco-cuenta strong { color: var(--rose-deep); }
+
+/* --- Resultado --- */
+.reco-result[hidden] { display: none; }
+.reco-result { outline: none; animation: recoIn 0.5s var(--ease-out-soft); }
+@keyframes recoIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.reco-result-intro {
+  font-family: var(--font-serif);
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
+  color: var(--ink);
+  margin: 0 0 1.2rem;
+}
+
+.reco-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+}
+@media (min-width: 700px) { .reco-cards { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; } }
+
+.reco-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-color: var(--warm-white);
+  border: 1px solid var(--border-light);
+  transition: transform 0.4s var(--ease-out-soft), box-shadow 0.4s var(--ease-out-soft);
+}
+.reco-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-rose); }
+.reco-card.is-primera { border-color: var(--rose); box-shadow: var(--shadow-md); }
+
+.reco-card-tag {
+  position: absolute;
+  top: 0.7rem;
+  left: 0.7rem;
+  z-index: 2;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(100deg, var(--rose-deep), var(--rose));
+  padding: 0.28rem 0.65rem;
+  border-radius: var(--radius-full);
+  box-shadow: 0 4px 12px rgba(142, 111, 108, 0.3);
+}
+
+.reco-card-media {
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background-color: var(--blush);
+}
+.reco-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.7s var(--ease-out-soft);
+}
+.reco-card:hover .reco-card-media img { transform: scale(1.05); }
+
+.reco-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1.05rem 1.15rem 1.2rem;
+  flex: 1;
+}
+.reco-card-motivo {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rose-deep);
+}
+.reco-card-nombre {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  line-height: 1.2;
+  margin: 0;
+}
+.reco-card-nombre a { color: var(--ink); }
+.reco-card-nombre a:hover { color: var(--rose-deep); }
+.reco-card-desc {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--muted-text);
+  margin: 0;
+}
+
+.reco-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.9rem;
+  margin-top: 0.35rem;
+}
+.reco-card-precio {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  line-height: 1;
+  font-weight: 600;
+  color: var(--rose-deep);
+}
+.reco-card-precio.is-pendiente {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--taupe);
+}
+.reco-card-dur { font-size: 0.78rem; color: var(--muted-text); }
+
+.reco-card-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1rem;
+  margin-top: auto;
+  padding-top: 0.9rem;
+}
+.reco-card-cta .link-arrow { font-size: 0.82rem; }
+
+.reco-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem 1.2rem;
+  padding-top: 0.2rem;
+}
+.reco-nota {
+  margin: 1rem 0 0;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--border-light);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--taupe);
+}
+
+/* Destacado del enlace en el mega-menú */
+.mega-foot-link.is-destacado {
+  background-color: var(--rose-deep);
+  border-color: var(--rose-deep);
+  color: #fff;
+}
+.mega-foot-link.is-destacado:hover { background-color: var(--rose-dark); border-color: var(--rose-dark); }
+
+@media (prefers-reduced-motion: reduce) {
+  .reco-result, .reco-barra-fill { animation: none !important; transition: none !important; }
+}
+
+.reco-extra {
+  margin: -0.4rem 0 1.3rem;
+  padding: 0.8rem 1rem;
+  border-radius: var(--radius-md);
+  background-color: var(--blush-soft);
+  border: 1px dashed var(--border);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+.reco-extra a { color: var(--rose-deep); font-weight: 600; }
+.reco-extra strong { color: var(--rose-deep); }
