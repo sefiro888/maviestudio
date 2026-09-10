@@ -146,10 +146,9 @@
      Motor de respuesta
      ---------------------------------------------------------------------- */
   // "tinte de cejas" y "tinte cejas" son lo mismo: fuera los enlaces
+  var ENLACES = /\b(?:de|del|la|el|los|las|y|con|para|un|una|mi|mis)\b/g;
   function sinEnlaces(t) {
-    return normalizar(t)
-      .replace(/(de|del|la|el|los|las|y|con|para|un|una|mi|mis)/g, ' ')
-      .replace(/\s+/g, ' ').trim();
+    return normalizar(t).replace(ENLACES, ' ').replace(/\s+/g, ' ').trim();
   }
 
   function detectarTratamiento(q) {
