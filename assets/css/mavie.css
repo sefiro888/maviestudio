@@ -1654,3 +1654,333 @@ img[src*="/plates/"] {
 .mobile-nav-footer { padding-top: 1rem; }
 .mobile-nav-footer p { margin: 0.35rem 0 0; font-size: 0.78rem; line-height: 1.45; }
 .mobile-nav-footer .open-status { font-size: 0.74rem; }
+
+/* ==========================================================================
+   21. BOTÓN FLOTANTE DE INSTAGRAM
+   ========================================================================== */
+.whatsapp-floating-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.6rem;
+}
+
+.insta-floating {
+  display: grid;
+  place-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--rose-deep), var(--rose));
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(142, 111, 108, 0.34);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  order: 2;
+}
+.insta-floating svg { width: 21px; height: 21px; }
+.insta-floating:hover {
+  transform: translateY(-2px) scale(1.06);
+  box-shadow: 0 12px 28px rgba(142, 111, 108, 0.44);
+}
+.whatsapp-floating { order: 1; }
+.whatsapp-tooltip { order: 0; }
+
+/* ==========================================================================
+   22. ¿POR QUÉ MAVIÈ?
+   ========================================================================== */
+.why-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+@media (min-width: 700px) { .why-grid { grid-template-columns: repeat(2, 1fr); gap: 1.1rem 2rem; } }
+@media (min-width: 1000px) { .why-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.why-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 1.15rem 1.25rem;
+  border-radius: var(--radius-lg);
+  background-color: var(--warm-white);
+  border: 1px solid var(--border-light);
+  transition: transform 0.4s var(--ease-out-soft), box-shadow 0.4s var(--ease-out-soft);
+}
+.why-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+
+.why-check {
+  flex-shrink: 0;
+  display: grid;
+  place-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--rose-deep), var(--rose));
+  color: #fff;
+  margin-top: 0.1rem;
+}
+.why-check svg { width: 15px; height: 15px; }
+
+.why-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  line-height: 1.25;
+  color: var(--ink);
+  margin: 0 0 0.3rem;
+}
+.why-desc { font-size: 0.88rem; line-height: 1.6; color: var(--muted-text); margin: 0; }
+
+/* --- Lo que no vas a encontrar --- */
+.why-not {
+  padding: clamp(1.5rem, 4vw, 2.2rem);
+  border-radius: var(--radius-xl);
+  background-color: var(--ink);
+  color: rgba(255, 255, 255, 0.82);
+}
+.why-not-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+  color: #fff;
+  margin: 0 0 1.1rem;
+}
+.why-not-list {
+  list-style: none;
+  margin: 0 0 1.3rem;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.6rem 2rem;
+}
+@media (min-width: 700px) { .why-not-list { grid-template-columns: repeat(2, 1fr); } }
+
+.why-not-list li {
+  position: relative;
+  padding-left: 1.8rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+.why-not-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.42em;
+  width: 13px;
+  height: 2px;
+  background-color: var(--rose);
+  border-radius: 2px;
+}
+
+.why-not-foot {
+  margin: 0;
+  padding-top: 1.1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+.why-not-foot strong { color: #fff; }
+.why-not-foot .stars { color: var(--star-gold); letter-spacing: 0.08em; margin-right: 0.4rem; }
+
+/* Enlace en el pie del mega-menú */
+.mega-foot-link {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--rose-deep);
+  padding: 0.2rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  transition: all var(--transition-fast);
+}
+.mega-foot-link:hover { background-color: var(--rose-deep); border-color: var(--rose-deep); color: #fff; }
+
+/* ==========================================================================
+   23. MENOS ADORNO EN MÓVIL
+   La marca de agua y la cinta pesan y distraen en pantalla pequeña.
+   ========================================================================== */
+@media (max-width: 767px) {
+  .hero-marquee { display: none; }
+  .hero-grain { opacity: 0.18; }
+  .hero-watermark { font-size: 22rem; color: rgba(142, 111, 108, 0.04); }
+  .hero-cine-bg::after { display: none; }
+  .review-card::before { font-size: 3.2rem; opacity: 0.7; }
+  .section-header .section-title::after { margin-top: 0.7rem; }
+}
+
+/* ==========================================================================
+   24. CAJÓN MÓVIL — ACABADO
+   El de escritorio ya tenía presencia; este era correcto pero soso.
+   ========================================================================== */
+
+.mobile-nav-drawer {
+  width: min(92vw, 400px);
+  background: linear-gradient(170deg, var(--warm-white) 0%, var(--ivory) 55%, var(--blush-soft) 100%);
+  padding: 0;
+}
+
+/* Monograma al agua, como en la portada */
+.mobile-nav-drawer::before {
+  content: "M";
+  position: absolute;
+  right: -3rem;
+  bottom: 4rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 20rem;
+  line-height: 1;
+  color: rgba(142, 111, 108, 0.045);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+.mobile-nav-header,
+.mobile-nav-links,
+.mobile-nav-footer { position: relative; z-index: 1; }
+
+.mobile-nav-header {
+  padding: 1.1rem 1.3rem;
+  border-bottom: 1px solid var(--border-light);
+  background-color: rgba(255, 255, 255, 0.6);
+}
+.btn-close-drawer {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background-color: var(--warm-white);
+  color: var(--rose-deep);
+  font-size: 1.4rem;
+  line-height: 1;
+  transition: all var(--transition-fast);
+}
+.btn-close-drawer:hover { background-color: var(--rose-deep); border-color: var(--rose-deep); color: #fff; }
+
+.mobile-nav-links { padding: 0.6rem 1.3rem 1rem; gap: 0; }
+
+/* --- Entradas de primer nivel --- */
+.m-link,
+.m-acc-btn {
+  font-size: 1.3rem;
+  letter-spacing: -0.005em;
+  min-height: 54px;
+  padding: 0.55rem 0;
+}
+.m-link { position: relative; }
+.m-link::after,
+.m-acc-btn::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0.55rem;
+  width: 0;
+  height: 1px;
+  background-color: var(--rose);
+  transition: width 0.35s var(--ease-out-soft);
+}
+.m-link.active::after { width: 26px; }
+
+.m-acc-btn { position: relative; }
+.m-acc-btn[aria-expanded="true"]::after { width: 26px; }
+
+.m-acc-meta {
+  font-size: 0.62rem;
+  padding: 0.2rem 0.52rem;
+  background: linear-gradient(120deg, var(--rose-deep), var(--rose));
+  color: #fff;
+}
+
+/* --- Categorías dentro del acordeón --- */
+.m-acc-panel {
+  padding: 0.15rem 0 1rem;
+  animation: mAccIn 0.32s var(--ease-out-soft);
+}
+@keyframes mAccIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.m-cat {
+  gap: 0.85rem;
+  padding: 0.55rem 0.6rem;
+  margin-bottom: 0.15rem;
+  background-color: rgba(255, 255, 255, 0.55);
+  border: 1px solid transparent;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+}
+.m-cat:active { transform: scale(0.985); }
+.m-cat.is-current {
+  background-color: var(--warm-white);
+  border-color: var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.m-cat-thumb { width: 50px; height: 50px; box-shadow: var(--shadow-sm); }
+.m-cat-name { font-family: var(--font-serif); font-size: 1.06rem; }
+.m-cat-count { font-size: 0.63rem; }
+
+/* Flecha al final de cada categoría */
+.m-cat::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  margin-left: auto;
+  flex-shrink: 0;
+  border-right: 1.5px solid var(--taupe-light);
+  border-top: 1.5px solid var(--taupe-light);
+  transform: rotate(45deg);
+}
+.m-cat.is-current::after { border-color: var(--rose-deep); }
+
+.m-all {
+  margin-top: 0.5rem;
+  padding: 0.65rem 0.6rem;
+  border-radius: var(--radius-md);
+  background-color: var(--blush-soft);
+  text-align: center;
+}
+
+/* --- Pie --- */
+.mobile-nav-footer {
+  padding: 1.1rem 1.3rem calc(1.1rem + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border-light);
+  background-color: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.mobile-nav-footer p { color: var(--muted-text); }
+.mobile-nav-footer a { color: var(--rose-deep); font-weight: 600; }
+
+/* Entrada escalonada al abrir el cajón */
+.mobile-nav-drawer.open .m-link,
+.mobile-nav-drawer.open .m-acc {
+  animation: mItemIn 0.45s var(--ease-out-soft) backwards;
+}
+.mobile-nav-drawer.open .mobile-nav-links > *:nth-child(1) { animation-delay: 0.04s; }
+.mobile-nav-drawer.open .mobile-nav-links > *:nth-child(2) { animation-delay: 0.09s; }
+.mobile-nav-drawer.open .mobile-nav-links > *:nth-child(3) { animation-delay: 0.14s; }
+.mobile-nav-drawer.open .mobile-nav-links > *:nth-child(4) { animation-delay: 0.19s; }
+@keyframes mItemIn {
+  from { opacity: 0; transform: translateX(18px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav-drawer.open .m-link,
+  .mobile-nav-drawer.open .m-acc,
+  .m-acc-panel { animation: none !important; }
+}
+
+/* En móvil manda la barra inferior: de los flotantes solo queda Instagram,
+   porque WhatsApp ya está en la barra y duplicarlo ensucia la pantalla. */
+@media (max-width: 991px) {
+  .whatsapp-floating-container {
+    display: flex !important;
+    bottom: 8.6rem;
+    right: 0.85rem;
+    gap: 0;
+  }
+  .whatsapp-floating,
+  .whatsapp-tooltip { display: none !important; }
+  .insta-floating { width: 40px; height: 40px; }
+  .insta-floating svg { width: 19px; height: 19px; }
+}
