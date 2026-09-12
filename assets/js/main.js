@@ -27,6 +27,7 @@
     initNavMenus();
     initMobileAccordion();
     initRecomendador();
+    initHeroReel();
   });
 
   /* ========================================================================
@@ -954,5 +955,132 @@
     Array.prototype.forEach.call(pasos, function (p) {
       p.hidden = parseInt(p.getAttribute('data-paso'), 10) !== 1;
     });
+  }
+
+  /* ========================================================================
+     20. CABECERA EN SECUENCIA
+     Encadena las fotografías reales del estudio como si fuese un vídeo.
+     Se detiene cuando la pestaña no se ve o el hero queda fuera de pantalla,
+     y respeta la preferencia de movimiento reducido.
+     ======================================================================== */
+  function initHeroReel() {
+    var reel = document.querySelector('[data-hero-reel]');
+    if (!reel) return;
+
+    var slides = reel.querySelectorAll('[data-hr-slide]');
+    var barras = reel.querySelectorAll('[data-hr-bar]');
+    if (slides.length < 2) return;
+
+    var DURACION = 5400;
+    reel.style.setProperty('--hr-duracion', (DURACION / 1000) + 's');
+
+    // Pies de foto: qué se está viendo y a dónde lleva
+    var pies = [];
+    var datos = reel.querySelector('[data-hr-pies]');
+    if (datos) {
+      try { pies = JSON.parse(datos.textContent); } catch (e) { pies = []; }
+    }
+    var pie = reel.querySelector('[data-hr-caption]');
+    var pieK = reel.querySelector('[data-hr-k]');
+    var pieV = reel.querySelector('[data-hr-v]');
+
+    var actual = 0;
+    var reloj = null;
+    var enPantalla = true;
+    var quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function pintarPie(i) {
+      if (!pie || !pies[i] || !pieK || !pieV) return;
+      if (pieK.textContent === pies[i].k) return;
+      pie.classList.add('is-cambiando');
+      window.setTimeout(function () {
+        pieK.textContent = pies[i].k;
+        pieV.textContent = pies[i].v;
+        pie.setAttribute('href', pies[i].u);
+        pie.classList.remove('is-cambiando');
+      }, 280);
+    }
+
+    function ir(i) {
+      if (i === actual) return;
+      var saliente = slides[actual];
+      saliente.classList.remove('is-active');
+      saliente.classList.add('is-prev');
+      window.setTimeout(function () { saliente.classList.remove('is-prev'); }, 1600);
+
+      actual = i;
+      slides[actual].classList.add('is-active');
+
+      // Las siguientes se piden con algo de antelación para que no parpadeen
+      var siguiente = slides[(actual + 1) % slides.length].querySelector('img');
+      if (siguiente && siguiente.loading === 'lazy') siguiente.loading = 'eager';
+
+      Array.prototype.forEach.call(barras, function (b, n) {
+        b.classList.remove('is-active');
+        b.classList.toggle('is-seen', n < actual);
+        if (n === actual) b.setAttribute('aria-current', 'true');
+        else b.removeAttribute('aria-current');
+      });
+      // Forzamos el reinicio de la barra que se pone en marcha
+      if (barras[actual]) {
+        void barras[actual].offsetWidth;
+        barras[actual].classList.add('is-active');
+      }
+
+      pintarPie(actual);
+    }
+
+    function avanzar() { ir((actual + 1) % slides.length); }
+
+    function arrancar() {
+      if (quieto || reloj || !enPantalla || document.hidden) return;
+      reloj = window.setInterval(avanzar, DURACION);
+    }
+    function parar() {
+      if (reloj) { window.clearInterval(reloj); reloj = null; }
+    }
+
+    // Salto manual desde las barritas
+    Array.prototype.forEach.call(barras, function (b, n) {
+      b.addEventListener('click', function () {
+        parar();
+        ir(n);
+        arrancar();
+      });
+    });
+
+    // Deslizar con el dedo
+    var x0 = null, y0 = null;
+    reel.addEventListener('touchstart', function (e) {
+      x0 = e.touches[0].clientX;
+      y0 = e.touches[0].clientY;
+    }, { passive: true });
+    reel.addEventListener('touchend', function (e) {
+      if (x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0;
+      var dy = e.changedTouches[0].clientY - y0;
+      x0 = null;
+      if (Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy)) return;
+      parar();
+      ir(dx < 0 ? (actual + 1) % slides.length
+                : (actual - 1 + slides.length) % slides.length);
+      arrancar();
+    }, { passive: true });
+
+    // Nada de girar en segundo plano
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) parar(); else arrancar();
+    });
+
+    if ('IntersectionObserver' in window) {
+      var obs = new IntersectionObserver(function (entradas) {
+        enPantalla = entradas[0].isIntersecting;
+        if (enPantalla) arrancar(); else parar();
+      }, { threshold: 0.12 });
+      obs.observe(reel);
+    }
+
+    if (barras[0]) barras[0].classList.add('is-active');
+    arrancar();
   }
 })();

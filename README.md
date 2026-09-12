@@ -39,6 +39,7 @@ archivos o subiendo la carpeta a un hosting.
     ├── js/main.js           Comportamiento e interacción
     └── images/
         ├── real/            Fotos reales del estudio
+        ├── hero/            Las 6 de la portada, recomprimidas en dos tamaños
         └── ilustracion/     Imágenes creadas que representan el tratamiento
 ```
 
@@ -66,6 +67,14 @@ Y abrir <http://localhost:8000>.
   la cabina y una modelo de archivo presentada como la fundadora). Están
   archivadas fuera del repositorio.
 - **Sin antes/después inventados.** Solo se publican comparativas reales.
+- **Cabecera de la portada.** No hay vídeo del centro, así que la portada
+  encadena seis fotografías reales con fundido y un zoom lento. Cada fotograma
+  lleva al pie el servicio que muestra, con su precio, y enlaza a su ficha. Las
+  imágenes están en `assets/images/hero/` en dos anchos (800 y 1400 px); solo se
+  descarga la primera al abrir. La secuencia se detiene con la pestaña oculta o
+  el hero fuera de pantalla, y queda fija si el sistema pide movimiento reducido.
+  Mientras se ve la cabecera, el `<body>` lleva `hero-inmersivo` y la barra de
+  navegación se vuelve transparente sobre la fotografía.
 
 ## Pendiente
 
