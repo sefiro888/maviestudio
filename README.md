@@ -78,8 +78,29 @@ Y abrir <http://localhost:8000>.
 
 ## Pendiente
 
-- [ ] Precios de 12 tratamientos (marcados en la web como «a confirmar»)
+En espera de que el cliente acepte el presupuesto. Nada de esto está empezado.
+
+**Depende de Marta**
+
+- [ ] Precios de 12 tratamientos (marcados en la web como «a confirmar»):
+      manicura express, manicura sin esmalte, laminado de cejas, tinte de cejas,
+      maderoterapia 30 min y 1 h, depilación con cera, depilación láser, facial
+      acné, facial vitamina C, facial detox y Essential Care Prebiotic
 - [ ] Pares de fotos antes/después reales para restaurar el comparador
-- [ ] Aviso legal, política de privacidad y aviso de cookies (obligatorios por
-      LSSI-CE y RGPD; la web incrusta un mapa de Google que instala cookies)
+      (el código está hecho y esperando material)
+- [ ] Datos fiscales (nombre, NIF y domicilio) para redactar los textos legales
+- [ ] Precios de packs y bonos, si quiere ofrecerlos
 - [ ] Enlazar la web desde la ficha de Google Business
+
+**Trabajo por hacer**
+
+- [ ] Aviso legal, política de privacidad y aviso de cookies. Obligatorios por
+      LSSI-CE y RGPD; la web incrusta un mapa de Google que instala cookies.
+      **Esto tiene que estar antes de que la web sea la oficial, no después.**
+- [ ] Sección de packs y tratamientos combinados
+- [ ] Datos estructurados de servicio y de preguntas frecuentes, para que Google
+      muestre precios y respuestas directamente en los resultados
+- [ ] Página 404
+- [ ] Imágenes en WebP con `srcset` en el resto del sitio (la cabecera ya lo usa)
+- [ ] Quitar la marca duplicada en algunos `<title>`
+- [ ] Cabecera en vídeo, si Marta llega a grabar o a animar las fotos
